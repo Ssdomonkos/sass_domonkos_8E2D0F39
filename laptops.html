@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>PC Áruház - Laptopok</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Laptopok</h1></header>
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="pcs.html">Asztali gépek</a>
+    <a href="laptops.html">Laptopok</a>
+  </nav>
+
+  <main>
+    <h2>Keresés</h2>
+    <label>RAM (GB):</label>
+    <select id="ramFilter">
+      <option value="">Bármely</option>
+      <option>8</option>
+      <option>16</option>
+      <option>32</option>
+    </select>
+
+    <label>Tárhely (GB):</label>
+    <select id="storageFilter">
+      <option value="">Bármely</option>
+      <option>512</option>
+      <option>1024</option>
+    </select>
+
+    <label>Processzor:</label>
+    <select id="cpuFilter">
+      <option value="">Bármely</option>
+      <option>Intel i5</option>
+      <option>Intel i7</option>
+      <option>AMD Ryzen 5</option>
+      <option>AMD Ryzen 7</option>
+    </select>
+
+    <label>Videókártya:</label>
+    <select id="gpuFilter">
+      <option value="">Bármely</option>
+      <option>NVIDIA RTX 3060</option>
+      <option>NVIDIA RTX 4070</option>
+      <option>Integrált</option>
+    </select>
+
+    <label>Rendezés:</label>
+    <select id="sortFilter">
+      <option value="">Alapértelmezett</option>
+      <option value="cheap">Legolcsóbb</option>
+      <option value="expensive">Legdrágább</option>
+    </select>
+
+    <button onclick="searchLaptops()">Keresés</button>
+
+    <div id="results"></div>
+  </main>
+
+  <script>
+    const laptops = [
+      { name: "Laptop 1", ram: 8, storage: 512, cpu: "Intel i5", gpu: "Integrált", price: 250000 },
+      { name: "Laptop 2", ram: 16, storage: 1024, cpu: "Intel i7", gpu: "NVIDIA RTX 4070", price: 650000 },
+      { name: "Laptop 3", ram: 8, storage: 512, cpu: "AMD Ryzen 5", gpu: "Integrált", price: 280000 },
+      { name: "Laptop 4", ram: 16, storage: 1024, cpu: "AMD Ryzen 7", gpu: "NVIDIA RTX 3060", price: 540000 },
+      { name: "Laptop 5", ram: 32, storage: 1024, cpu: "Intel i7", gpu: "NVIDIA RTX 4070", price: 750000 },
+      { name: "Laptop 6", ram: 8, storage: 512, cpu: "Intel i5", gpu: "Integrált", price: 230000 },
+      { name: "Laptop 7", ram: 16, storage: 1024, cpu: "AMD Ryzen 5", gpu: "Integrált", price: 330000 },
+      { name: "Laptop 8", ram: 32, storage: 1024, cpu: "AMD Ryzen 7", gpu: "NVIDIA RTX 4070", price: 800000 },
+      { name: "Laptop 9", ram: 8, storage: 512, cpu: "Intel i5", gpu: "Integrált", price: 210000 },
+      { name: "Laptop 10", ram: 16, storage: 1024, cpu: "Intel i7", gpu: "NVIDIA RTX 3060", price: 520000 },
+    ];
+
+    function searchLaptops() {
+      let ram = document.getElementById("ramFilter").value;
+      let storage = document.getElementById("storageFilter").value;
+      let cpu = document.getElementById("cpuFilter").value;
+      let gpu = document.getElementById("gpuFilter").value;
+      let sort = document.getElementById("sortFilter").value;
+
+      let results = laptops.filter(pc => 
+        (!ram || pc.ram == ram) &&
+        (!storage || pc.storage == storage) &&
+        (!cpu || pc.cpu == cpu) &&
+        (!gpu || pc.gpu == gpu)
+      );
+
+      if (sort === "cheap") results.sort((a,b)=>a.price-b.price);
+      if (sort === "expensive") results.sort((a,b)=>b.price-a.price);
+
+      const container = document.getElementById("results");
+      container.innerHTML = "";
+      if (results.length === 0) {
+        container.innerHTML = "<p>Nincs találat.</p>";
+        return;
+      }
+      results.forEach(pc => {
+        container.innerHTML += `
+          <div class="card">
+            <h3>${pc.name}</h3>
+            <p><b>RAM:</b> ${pc.ram} GB | <b>Tárhely:</b> ${pc.storage} GB</p>
+            <p><b>CPU:</b> ${pc.cpu} | <b>GPU:</b> ${pc.gpu}</p>
+            <p><b>Ár:</b> ${pc.price.toLocaleString()} Ft</p>
+          </div>`;
+      });
+    }
+
+    searchLaptops();
+  </script>
+</body>
+</html>
